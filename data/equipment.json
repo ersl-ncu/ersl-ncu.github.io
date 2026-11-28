@@ -1,0 +1,25 @@
+[
+ {
+  "name": "ASD 光譜輻射儀",
+  "type": "觀測儀器",
+  "desc": "量測地表、植被與水體的反射光譜（約 350–2500 nm），用於衛星影像校正與地物光譜分析。",
+  "img": "img/eq-asd.jpg"
+ },
+ {
+  "name": "CIMEL 太陽光度計",
+  "type": "觀測儀器",
+  "desc": "AERONET 標準儀器，量測多波段氣膠光學厚度與天空輻射，用於氣膠特性反演與衛星產品驗證。",
+  "img": "img/eq-cimel.jpg"
+ },
+ {
+  "name": "MICROTOPS II",
+  "type": "觀測儀器",
+  "desc": "手持式太陽光度計，可在野外與船上量測氣膠光學厚度與大氣水氣。",
+  "img": "img/eq-microtops.jpg"
+ },
+ {
+  "name": "SMARTS（Pandora 高光譜觀測）",
+  "type": "觀測儀器",
+  "desc": "Pandora 地面高光譜儀，觀測紫外光到可見光的太陽與天空光譜，可反演 NO₂、O₃ 等微量氣體柱濃度。"
+ }
+]

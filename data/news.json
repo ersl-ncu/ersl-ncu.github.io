@@ -1,0 +1,48 @@
+[
+ {
+  "type": "演講",
+  "date": "2025-04-28",
+  "title": "林唐煌教授於台印雙邊太空遙測網路研討會演講",
+  "summary": "講題：Remote Sensing of Aerosol Partitioning and PM Concentration。",
+  "img": "img/aerosol-partition.jpg",
+  "link": "#gallery"
+ },
+ {
+  "type": "論文發表",
+  "date": "2022",
+  "title": "海鹽氣膠辨識研究刊登於 Remote Sensing",
+  "summary": "Atmoko & Lin, Remote Sensing 14, 3188。以多光譜光學特性辨識海上的海鹽氣膠。",
+  "img": "img/sea-salt.jpg",
+  "link": "#gallery"
+ },
+ {
+  "type": "獲獎",
+  "date": "2022",
+  "title": "林唐煌教授獲國科會未來科技獎"
+ },
+ {
+  "type": "論文發表",
+  "date": "2023",
+  "title": "PM2.5 與 AOD 關係研究刊登於 Science of the Total Environment"
+ },
+ {
+  "type": "論文發表",
+  "date": "2023",
+  "title": "Pham & Lin：越南芽莊生態系服務價值研究刊登於 Land Use Policy"
+ },
+ {
+  "type": "論文發表",
+  "date": "2022",
+  "title": "Simanjuntak & Lin：季風對小巽他群島葉綠素與海溫的影響（Remote Sensing）"
+ },
+ {
+  "type": "論文發表",
+  "date": "2022",
+  "title": "以衛星影像與機器學習預測降雨（Remote Sensing 14, 5950）"
+ },
+ {
+  "type": "獲獎",
+  "date": "2020",
+  "title": "台灣創新技術博覽會 鉑金獎"
+ }
+]

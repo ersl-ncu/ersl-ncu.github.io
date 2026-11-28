@@ -1,0 +1,718 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>環境遙測研究室</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+
+/* Layout: portal pattern. Utility bar, 7-item mega-menu nav, data-first hero with quick links, topic grid, news mix, tools, metrics, learning, dense footer. */
+:root{
+  --bg:#f6f8f8; --surface:#ffffff; --ink:#132227; --muted:#566a70; --line:#d8e1e3;
+  --deep:#0d2f36; --deep-ink:#e8f3f2; --accent:#0f8a7e; --accent-ink:#ffffff; --warn-bg:#fff4d6; --warn-ink:#6b4b00;
+  --tag-bg:#ffe9a8; --tag-ink:#3d2e00;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --wrap:1180px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0c1517; --surface:#132125; --ink:#e3ecec; --muted:#9db1b5; --line:#24393e;
+  --deep:#071c21; --deep-ink:#e3f2f0; --accent:#3cc2b3; --accent-ink:#04201d; --warn-bg:#3a2f12; --warn-ink:#f4dc9a;
+  --tag-bg:#5a4a10; --tag-ink:#fff0bf; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1517; --surface:#132125; --ink:#e3ecec; --muted:#9db1b5; --line:#24393e;
+  --deep:#071c21; --deep-ink:#e3f2f0; --accent:#3cc2b3; --accent-ink:#04201d; --warn-bg:#3a2f12; --warn-ink:#f4dc9a;
+  --tag-bg:#5a4a10; --tag-ink:#fff0bf; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.7;margin:0}
+a{color:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+h1,h2,h3{text-wrap:balance;line-height:1.3;margin:0}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.ph{color:var(--accent);font-weight:700}
+.mono{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+
+/* Earthdata mapping tags */
+.ref{display:none;position:absolute;top:8px;right:8px;z-index:5;background:var(--tag-bg);color:var(--tag-ink);font-family:var(--f-mono);font-size:11px;line-height:1.3;padding:4px 8px;border-radius:4px;max-width:70%;text-align:right}
+body.show-ref .ref{display:block}
+.has-ref{position:relative}
+
+/* alert */
+.alert{background:var(--warn-bg);color:var(--warn-ink);font-size:14px}
+.alert .wrap{display:flex;gap:12px;align-items:center;padding-block:8px;flex-wrap:wrap}
+.alert b{font-weight:700}
+
+/* header */
+header.site{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:20}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.hdr{display:flex;align-items:center;gap:20px;min-height:68px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:900;font-size:18px;white-space:nowrap}
+.logo-mark{width:36px;height:36px;border-radius:8px;background:var(--deep);display:grid;place-items:center;color:var(--deep-ink);font-family:var(--f-mono);font-size:13px}
+.logo small{display:block;font-weight:500;font-size:12px;color:var(--muted);line-height:1.2}
+nav.main{flex:1;min-width:0}
+nav.main>ul{list-style:none;margin:0;padding:0;display:flex;gap:2px;justify-content:flex-end;flex-wrap:wrap}
+.nav-btn{background:none;border:0;font:inherit;font-size:15px;font-weight:500;color:var(--ink);padding:10px 12px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:4px}
+.nav-btn::after{content:"";width:6px;height:6px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translateY(-2px);margin-left:4px;transition:transform .15s}
+.nav-btn[aria-expanded="true"]{background:var(--bg);color:var(--accent)}
+.nav-btn[aria-expanded="true"]::after{transform:rotate(225deg) translateY(-1px)}
+.search-btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;width:40px;height:40px;display:grid;place-items:center;cursor:pointer;flex:none}
+.menu-toggle{display:none}
+
+.mega{position:absolute;left:0;right:0;top:100%;background:var(--surface);border-bottom:1px solid var(--line);box-shadow:0 18px 30px -18px rgba(0,0,0,.35)}
+.mega .wrap{display:grid;grid-template-columns:240px 1fr;gap:32px;padding-block:28px}
+.mega-intro h3{font-size:22px;margin-bottom:6px}
+.mega-intro p{color:var(--muted);font-size:14px;margin:0 0 12px}
+.mega-intro a{color:var(--accent);font-weight:700;font-size:14px}
+.mega-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;min-width:0}
+.mega-cols h4{margin:0 0 8px;font-size:12px;color:var(--muted)}
+.mega-cols ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.mega-cols a{text-decoration:none;font-size:15px;display:block}
+.mega-cols a span{display:block;font-size:13px;color:var(--muted)}
+.mega-cols a:hover{color:var(--accent)}
+
+/* hero */
+.hero{background:var(--deep);color:var(--deep-ink);position:relative;overflow:hidden}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.55}
+.hero .wrap{position:relative;padding-block:64px 40px}
+.hero .mono{color:var(--accent)}
+.hero h1{font-size:clamp(30px,5vw,50px);font-weight:900;margin:10px 0 14px;max-width:18ch}
+.hero p.lead{max-width:60ch;margin:0 0 24px;opacity:.9}
+.search{display:flex;max-width:620px;background:var(--surface);border-radius:8px;overflow:hidden}
+.search input{flex:1;min-width:0;border:0;padding:14px 16px;font:inherit;background:transparent;color:var(--ink)}
+.search button{border:0;background:var(--accent);color:var(--accent-ink);font:inherit;font-weight:700;padding:0 22px;cursor:pointer}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.quick a{display:block;text-decoration:none;padding:18px 20px;border:1px solid rgba(255,255,255,.18);border-radius:8px;background:rgba(255,255,255,.04)}
+.quick a:hover{background:rgba(255,255,255,.1)}
+.quick b{display:block;font-size:17px}
+.quick span{font-size:14px;opacity:.8}
+
+/* sections */
+section.blk{padding-block:56px}
+section.blk+section.blk{border-top:1px solid var(--line)}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.sec-head h2{font-size:clamp(24px,3vw,32px);font-weight:900}
+.sec-head p{margin:6px 0 0;color:var(--muted);max-width:60ch}
+.more{color:var(--accent);font-weight:700;text-decoration:none;white-space:nowrap}
+.more:hover{text-decoration:underline}
+
+.topics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.topic{display:flex;gap:14px;align-items:center;text-decoration:none;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px}
+.topic:hover{border-color:var(--accent)}
+.topic svg{flex:none;width:40px;height:40px}
+.topic b{display:block;font-size:16px}
+.topic span{display:block;font-size:13px;color:var(--muted)}
+
+.news{display:grid;grid-template-columns:1fr 1fr 1.1fr;gap:24px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden;text-decoration:none;display:flex;flex-direction:column;min-width:0}
+.thumb{aspect-ratio:16/9;max-width:100%;background:linear-gradient(135deg,var(--deep),var(--accent));display:grid;place-items:center;color:var(--deep-ink);font-size:13px;opacity:.9}
+.card .body{padding:16px 18px 20px;display:grid;gap:6px}
+.meta{font-size:12px;color:var(--muted);display:flex;gap:10px}
+.meta .type{color:var(--accent);font-weight:700}
+.card h3{font-size:18px}
+.card p{margin:0;font-size:14px;color:var(--muted)}
+.list{display:grid;gap:0;min-width:0}
+.row{display:grid;grid-template-columns:72px 1fr;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);text-decoration:none}
+.row:first-child{padding-top:0}
+.row .mini{aspect-ratio:1;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--deep))}
+.row b{font-size:15px;font-weight:500;display:block;line-height:1.45}
+
+.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+
+.metrics{background:var(--deep);color:var(--deep-ink)}
+.metrics .sec-head p{color:var(--deep-ink);opacity:.8}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.stat{border-top:2px solid var(--accent);padding-top:12px}
+.stat b{font-size:clamp(30px,4vw,44px);font-weight:900;font-variant-numeric:tabular-nums;display:block;line-height:1.1}
+.stat span{font-size:14px;opacity:.85}
+
+.learn{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.learn a{text-decoration:none;padding:20px;border:1px solid var(--line);border-radius:8px;background:var(--surface);display:grid;gap:6px}
+.learn a:hover{border-color:var(--accent)}
+.learn b{font-size:17px}
+.learn span{font-size:14px;color:var(--muted)}
+
+.subscribe{display:flex;gap:24px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:24px}
+.subscribe form{display:flex;gap:8px;flex-wrap:wrap}
+.subscribe input{border:1px solid var(--line);border-radius:6px;padding:10px 12px;font:inherit;background:var(--bg);color:var(--ink);min-width:0;width:240px;max-width:100%}
+.subscribe button{border:0;border-radius:6px;background:var(--accent);color:var(--accent-ink);font:inherit;font-weight:700;padding:10px 18px;cursor:pointer}
+
+footer{background:var(--deep);color:var(--deep-ink);font-size:14px}
+footer .wrap{padding-block:48px 24px}
+.f-top{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.15)}
+.f-cols{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;padding-block:28px}
+.f-cols h4{margin:0 0 10px;font-size:14px}
+.f-cols ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.f-cols a{text-decoration:none;opacity:.8}
+.f-cols a:hover{opacity:1;text-decoration:underline}
+.f-bot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:20px;border-top:1px solid rgba(255,255,255,.15);opacity:.75;font-size:13px}
+.f-bot ul{list-style:none;margin:0;padding:0;display:flex;gap:16px;flex-wrap:wrap}
+
+.ref-toggle{position:fixed;right:max(16px,calc(env(safe-area-inset-right,0px) + 16px));bottom:calc(env(safe-area-inset-bottom,0px) + 16px);z-index:40;border:0;border-radius:999px;padding:10px 16px;background:var(--tag-bg);color:var(--tag-ink);font:inherit;font-size:14px;font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,.25);cursor:pointer}
+
+@media (max-width:960px){
+  .topics,.learn{grid-template-columns:repeat(2,1fr)}
+  .news{grid-template-columns:1fr 1fr}
+  .news .list{grid-column:1/-1}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .f-cols{grid-template-columns:repeat(3,1fr)}
+  .menu-toggle{display:grid}
+  nav.main{display:none;position:absolute;left:0;right:0;top:100%;background:var(--surface);border-bottom:1px solid var(--line);max-height:calc(100vh - 68px);overflow:auto}
+  nav.main.open{display:block}
+  nav.main>ul{flex-direction:column;padding:8px max(16px,env(safe-area-inset-left,0px))}
+  .nav-btn{width:100%;justify-content:space-between}
+  .mega{position:static;box-shadow:none;border:0}
+  .mega .wrap{grid-template-columns:1fr;padding-block:8px 16px;gap:16px}
+  .hdr{gap:12px}
+  .hdr .spacer{flex:1}
+}
+@media (max-width:620px){
+  .quick,.tools,.news{grid-template-columns:1fr}
+  .topics,.learn{grid-template-columns:1fr}
+  .f-cols{grid-template-columns:repeat(2,1fr)}
+  .logo small{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.topics{grid-template-columns:repeat(3,1fr)}
+.topic{cursor:pointer;font:inherit;color:inherit;text-align:left;width:100%}
+.topic .n{margin-left:auto;font-family:var(--f-mono);font-size:12px;color:var(--muted);white-space:nowrap}
+.topic.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 14px;font:inherit;font-size:14px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.player{display:grid;gap:16px}
+.pstage{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.pstage.one{grid-template-columns:1fr}
+.ppanel{position:relative;background:#fff;aspect-ratio:4/3}
+.pstage.h8{grid-template-columns:repeat(var(--n,3),minmax(0,1fr))}.pstage.h8 .ppanel{aspect-ratio:4/5}.pstage.h8 .ppanel>b{position:static;display:block;text-align:center;padding:8px 6px 0;background:none;font-size:13px;color:#132227}
+.pstage.h8 .ppanel img{top:34px;height:calc(100% - 34px)}
+.ppanel>b{position:absolute;left:8px;top:6px;z-index:1;font-size:12px;color:#566a70;background:rgba(255,255,255,.85);padding:1px 6px;border-radius:4px}
+.ppanel canvas,.ppanel img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.ppanel .empty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#566a70;font-size:14px;padding:16px}
+.pload{position:absolute;inset:0;display:grid;place-items:center;align-content:center;gap:10px;background:rgba(255,255,255,.85);color:#132227;font-size:15px}
+.pload .bar{width:220px;height:6px;border-radius:3px;background:#d8e1e3;overflow:hidden}.pload .bar i{display:block;height:100%;width:0;background:#0f8a7e}
+.pctl{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.pctl button,.pctl select{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;font:inherit;font-size:14px;padding:6px 10px;cursor:pointer;min-width:40px}
+.pctl input[type=range]{flex:1;min-width:140px;accent-color:var(--accent)}
+.pctl .mono{color:var(--muted);font-size:13px;min-width:64px;text-align:right}
+.pside{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px}
+.pside .meta{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}.pside .meta span{white-space:nowrap}
+.pside h3{font-size:19px;margin:0}.pside p{margin:0;font-size:14px;color:var(--muted)}
+.pdays{display:flex;flex-wrap:wrap;gap:6px}
+.pdays button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:5px 9px;font:inherit;font-size:13px;cursor:pointer}
+.pdays button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.pstage.h8.one{grid-template-columns:1fr;background:#fff}.pstage.h8.one .ppanel{aspect-ratio:auto;padding:8px;min-height:120px}.pstage.h8.one .ppanel>b{display:none}.pstage.h8.one .ppanel img{position:static;width:100%;height:auto;display:block}.pstage.h8.one .ppanel img[hidden]{display:none}
+@media (max-width:760px){.pstage,.pstage.h8{grid-template-columns:1fr}}
+.res{background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.res .pic{aspect-ratio:16/10;max-width:100%;background:#fff;display:grid;place-items:center;overflow:hidden;border-bottom:1px solid var(--line)}
+.res .pic img{width:100%;height:100%;object-fit:contain}
+.res .body{padding:14px 16px 18px;display:grid;gap:6px;align-content:start}
+.res h3{font-size:17px}
+.res .en{font-size:13px;color:var(--muted);line-height:1.45;font-style:italic}
+.res p{margin:0;font-size:14px}
+.res .who{font-size:13px;color:var(--muted)}
+.res .src{font-family:var(--f-mono);font-size:11px;color:var(--muted);letter-spacing:.02em;word-break:break-all}
+.pi{display:grid;grid-template-columns:auto 1fr;gap:24px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:24px;margin-bottom:20px}
+.pi .avatar{width:120px;height:150px;border-radius:6px;background:var(--deep);color:var(--deep-ink);display:grid;place-items:center;font-size:40px;font-weight:900}
+.pi h3{font-size:24px}
+.pi h3 small{font-size:15px;font-weight:500;color:var(--muted);margin-left:8px}
+.pi dl{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:12px 0 0;font-size:14px}
+.pi dt{color:var(--muted);white-space:nowrap}
+.pi dd{margin:0;min-width:0}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tags span{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:2px 8px;font-size:13px}
+.contact{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.contact div{padding:20px;border:1px solid var(--line);border-radius:8px;background:var(--surface);min-width:0}
+.contact b{display:block}
+.contact span{color:var(--muted);font-size:14px;word-break:break-word}
+.todo{display:inline-block;background:var(--tag-bg);color:var(--tag-ink);font-size:12px;padding:1px 6px;border-radius:4px;margin-left:6px;vertical-align:middle}
+
+.res .open{justify-self:start;margin-top:4px;border:1px solid var(--accent);background:transparent;color:var(--accent);border-radius:6px;padding:6px 12px;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.res .open:hover{background:var(--accent);color:var(--accent-ink)}
+.res .pic{cursor:pointer}
+.viewer{position:fixed;inset:0;z-index:100;background:rgba(5,15,18,.92);display:grid;grid-template-rows:auto 1fr auto;padding:calc(env(safe-area-inset-top,0px) + 12px) max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 12px) max(16px,env(safe-area-inset-left,0px));color:#e8f3f2}
+.viewer .vt{display:flex;gap:12px;align-items:center;justify-content:space-between;min-width:0}
+.viewer .vt b{font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.viewer .stage{display:grid;place-items:center;min-height:0;position:relative}
+.viewer .stage img{max-width:100%;max-height:100%;object-fit:contain;background:#fff;border-radius:4px}
+.viewer .vb{display:flex;gap:12px;align-items:center;justify-content:center}
+.viewer button{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#e8f3f2;border-radius:6px;padding:8px 14px;font:inherit;cursor:pointer}
+.viewer button:disabled{opacity:.35;cursor:default}
+.viewer .num{font-family:var(--f-mono);font-size:13px;min-width:80px;text-align:center}
+.contact .eq{display:grid;gap:6px;align-content:start}
+.contact .eq img{width:calc(100% + 40px);max-width:none;margin:-20px -20px 8px;aspect-ratio:4/3;object-fit:cover;border-radius:8px 8px 0 0}
+.contact .eq .meta{padding:0;border:0;background:none;border-radius:0}
+.members-h{font-size:18px;margin:8px 0 12px}
+.subnav{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 28px}
+.subnav a{text-decoration:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 14px;font-size:14px}
+.subnav a:hover{border-color:var(--accent);color:var(--accent)}
+.sub{margin-bottom:32px;scroll-margin-top:84px}.pi,#members{scroll-margin-top:84px}
+.intro{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:20px 24px;display:grid;gap:10px}
+.intro p{margin:0;font-size:15px;line-height:1.8}
+.pi-link{display:inline-block;margin-top:14px;font-size:14px}
+.members .mem{align-items:flex-start}
+.mem .field{display:block;margin-top:4px;font-size:13px;color:var(--ink)}
+.mem .web{display:inline-block;margin-top:6px;font-size:13px;color:var(--accent);text-decoration:none}
+.mem .web:hover{text-decoration:underline}
+.members{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.mem{display:flex;gap:12px;align-items:center;padding:16px;border:1px solid var(--line);border-radius:8px;background:var(--surface);min-width:0}
+.mem .av{flex:none;width:48px;height:48px;border-radius:50%;background:var(--deep);color:var(--deep-ink);display:grid;place-items:center;font-weight:700;font-size:18px;overflow:hidden}
+.mem .av img{width:100%;height:100%;object-fit:cover}
+.mem b{display:block;font-size:16px}
+.mem span{font-size:13px;color:var(--muted)}
+@media (max-width:960px){.members{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:960px){.gallery,.topics{grid-template-columns:repeat(2,1fr)}.contact{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:620px){.gallery,.topics,.contact{grid-template-columns:1fr}.pi{grid-template-columns:1fr}.pi .avatar{width:96px;height:120px;font-size:32px}}
+</style>
+
+<div class="alert has-ref"><span class="ref">Earthdata：頂部警示橫幅</span>
+  <div class="wrap"><b>網站建置中</b><span>產品展示將由實驗室伺服器自動更新。</span><a href="#products">詳情</a></div>
+</div>
+
+<header class="site has-ref">
+  <div class="wrap hdr">
+    <a class="logo" href="#top"><span class="logo-mark">ERSL</span><span>環境遙測研究室<small>國立中央大學 太空及遙測研究中心</small></span></a>
+    <span class="spacer"></span>
+    <nav class="main" id="nav" aria-label="主選單"><ul id="navlist"></ul></nav>
+    <button class="search-btn" aria-label="搜尋全站"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+    <button class="search-btn menu-toggle" id="menuToggle" aria-label="開啟選單" aria-expanded="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+  <span class="ref">Earthdata：Logo + mega-menu + 搜尋</span>
+</header>
+
+<main id="top">
+  <section class="hero has-ref">
+    <canvas id="contours" aria-hidden="true"></canvas>
+    <span class="ref">Earthdata：Hero + 搜尋 + 3 個快速入口</span>
+    <div class="wrap">
+      <div class="mono">Environmental Remote Sensing Lab · NCU CSRSR</div>
+      <h1>用衛星觀測看見空氣、地表與水的變化</h1>
+      <p class="lead">環境遙測研究室由林唐煌特聘教授主持，研究大氣氣膠遙測、PM2.5 空污遙測、衛星輻射與大氣校正，以及都市熱島效應，從台灣到東南亞，把衛星資料轉成可用的環境資訊。</p>
+      <form class="search" role="search" onsubmit="event.preventDefault()">
+        <input id="q" type="search" placeholder="搜尋研究成果、論文、成員…" aria-label="搜尋">
+        <button type="submit">搜尋</button>
+      </form>
+      <div class="quick">
+        <a href="#results"><b>研究成果 →</b><span>依主題瀏覽研究展示</span></a>
+        <a href="#products"><b>產品展示 →</b><span>伺服器定期更新的最新產品圖</span></a>
+        <a href="#contact"><b>聯絡我們 →</b><span>地址、合作洽詢與招生</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk has-ref" id="about">
+    <span class="ref">Earthdata：About（Leadership / Org Chart）</span>
+    <div class="wrap">
+      <div class="sec-head"><div><h2>實驗室介紹</h2><p>環境遙測研究室（Environmental Remote Sensing Lab, ERSL）隸屬國立中央大學太空及遙測研究中心。</p></div></div>
+      <nav class="subnav" aria-label="實驗室介紹">
+        <a href="#intro">研究室簡介</a><a href="#pi">指導教授</a><a href="#members">研究室成員</a><a href="#equipment">研究設備</a>
+      </nav>
+
+      <div class="sub" id="intro">
+        <h3 class="members-h">研究室簡介</h3>
+        <div class="intro">
+          <p>環境遙測研究室由林唐煌特聘教授主持，結合衛星遙測、地面觀測與輻射傳輸模式，研究大氣與地表環境的變化。研究主題包括大氣氣膠遙測與氣膠分類、PM2.5 空污遙測、衛星輻射與大氣校正、都市熱島效應、地表與土地利用變遷，以及氣候變遷相關議題。</p>
+          <p>研究室也維運向日葵八號衛星的即時產品，例如火點偵測與亮溫異常，並與越南、印尼、印度等地的研究團隊合作，把衛星資料轉成可用的環境資訊。</p>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3 class="members-h">指導教授</h3>
+      <div class="pi" id="pi">
+        <div class="avatar" aria-label="教授照片佔位">林</div>
+        <div style="min-width:0">
+          <h3>林唐煌<small>Tang-Huang Lin ・ 特聘教授</small></h3>
+          <dl>
+            <dt>研究領域</dt><dd class="tags"><span>大氣氣膠遙測</span><span>衛星大氣輻射校正</span><span>空污 PM2.5 遙測</span><span>都市熱島效應</span></dd>
+            <dt>現職</dt><dd>國立中央大學 太空及遙測研究中心 教授（主聘）、太空科學研究所 教授（從聘）、環境監測聯合研究中心 主任；國科會太空科學聯盟 執行秘書；台灣太空科技學會 理事長</dd>
+            <dt>學歷</dt><dd>國立中央大學 太空科學研究所 博士（2001）・ 大氣物理研究所 碩士（1989）・ 逢甲大學 航空工程學系 學士（1987）</dd>
+            <dt>近期榮譽</dt><dd>2022、2020、2019 未來科技獎 ・ 2020 台灣創新技術博覽會 鉑金獎 ・ 中央大學研究傑出獎（2016–2020）</dd>
+          </dl>
+          <a class="more pi-link" href="https://www.csrsr.ncu.edu.tw/about/professor_info.php?id=9" target="_blank" rel="noopener">完整個人資料、著作與經歷（太空及遙測研究中心）→</a>
+        </div>
+      </div>
+      </div>
+
+      <div class="sub">
+        <h3 class="members-h" id="members-h">研究室成員</h3>
+        <div class="members" id="members"></div>
+      </div>
+
+      <div class="sub" id="equipment">
+        <h3 class="members-h">研究設備</h3>
+        <div class="contact" id="equip"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk metrics has-ref">
+    <span class="ref">Earthdata：年度成果數據（Program Metrics）</span>
+    <div class="wrap">
+      <div class="sec-head"><div><h2>研究室一覽</h2><p>數字依目前整理的資料計算，可再換成年度統計。</p></div></div>
+      <div class="stats">
+        <div class="stat"><b id="mTopics">6</b><span>研究主題</span></div>
+        <div class="stat"><b id="mItems">14</b><span>研究成果展示</span></div>
+        <div class="stat"><b>19</b><span>主持人學術榮譽</span></div>
+        <div class="stat"><b>1991</b><span>投入太空遙測研究起始年</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk has-ref" id="results">
+    <span class="ref">Earthdata：Browse Data by Topic（主題圖示格）</span>
+    <div class="wrap">
+      <div class="sec-head"><div><h2>研究成果：依主題瀏覽</h2><p>點選主題，下方成果展示會只顯示該主題的研究。</p></div></div>
+      <div class="topics" id="topicGrid"></div>
+    </div>
+  </section>
+
+  <section class="blk has-ref" id="gallery">
+    <span class="ref">新增區塊（Earthdata 主題頁的成果列表）</span>
+    <div class="wrap">
+      <div class="sec-head"><div><h2>研究成果展示</h2><p>整理自實驗室研究簡報，圖片取自各份簡報。</p></div><span class="mono" id="count" style="color:var(--muted)"></span></div>
+      <div class="chips" id="chips" role="group" aria-label="依主題篩選"></div>
+      <div class="gallery" id="galleryGrid"></div>
+    </div>
+  </section>
+
+  <section class="blk has-ref" id="news">
+    <span class="ref">Earthdata：New on Earthdata（2 張大卡 + 精簡列表）</span>
+    <div class="wrap">
+      <div class="sec-head"><div><h2>最新消息</h2><p>論文發表、演講與獲獎。以下取自林老師個人頁面的近年紀錄。</p></div><a class="more" href="#news">所有消息 →</a></div>
+      <div class="news" id="newsWrap">
+      </div>
+    </div>
+  </section>
+
+  <section class="blk has-ref" id="products">
+    <span class="ref">Earthdata：Featured Data Tools／Worldview Image of the Week</span>
+    <div class="wrap">
+      <div class="sec-head"><div><h2>產品展示</h2><p>由實驗室伺服器自動更新，播放最新一天的衛星產品。</p></div><span class="mono" id="pupdated" style="color:var(--muted)"></span></div>
+      <div class="chips" id="pchips" role="group" aria-label="依產品類別篩選"></div>
+      <div id="pgrid"></div>
+    </div>
+  </section>
+
+
+
+  <section class="blk has-ref" id="contact">
+    <span class="ref">Earthdata：Contact Us</span>
+    <div class="wrap">
+      <div class="sec-head"><div><h2>聯絡資訊</h2></div></div>
+      <div class="contact">
+        <div><b>地址</b><span>32001 桃園市中壢區中大路 300 號 國立中央大學 太空及遙測研究中心 R3-220 室</span></div>
+        <div><b>電話</b><span>(03) 422-7151 分機 57633、57616</span></div>
+        <div><b>Email</b><span>thlin@csrsr.ncu.edu.tw</span></div>
+        <div><b>招生與合作</b><span>歡迎對遙測、氣膠與空污研究有興趣的學生來信</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="has-ref">
+  <span class="ref">Earthdata：頁尾多欄連結 + 社群 + 政策列</span>
+  <div class="wrap">
+    <div class="f-top">
+      <div><b style="font-size:18px">環境遙測研究室 ERSL</b><div style="opacity:.8">國立中央大學 太空及遙測研究中心 R3-220 室<br>32001 桃園市中壢區中大路 300 號 ・ thlin@csrsr.ncu.edu.tw</div></div>
+      <div style="opacity:.8">〔社群連結：Facebook ・ YouTube ・ Google Scholar〕</div>
+    </div>
+    <div class="f-cols" id="fcols"></div>
+    <div class="f-bot"><span>© 2026 環境遙測研究室 ・ 網站原型</span><ul><li><a href="https://www.csrsr.ncu.edu.tw/" target="_blank" rel="noopener">太空及遙測研究中心</a></li><li><a href="https://www.ncu.edu.tw/" target="_blank" rel="noopener">國立中央大學</a></li><li><a href="#top">網站地圖</a></li></ul></div>
+  </div>
+</footer>
+
+<div class="viewer" id="viewer" hidden role="dialog" aria-modal="true" aria-label="簡報檢視">
+  <div class="vt"><b id="vTitle"></b><button id="vClose" aria-label="關閉">關閉 ✕</button></div>
+  <div class="stage"><iframe id="vFrame" title="簡報" src="about:blank" allowfullscreen style="width:100%;height:100%;max-width:1280px;aspect-ratio:16/9;max-height:100%;border:0;border-radius:4px;background:#fff"></iframe></div>
+  <div class="vb" style="font-size:13px;opacity:.75">用簡報下方的箭頭換頁，按 Esc 關閉</div>
+</div>
+<button class="ref-toggle" id="refToggle" aria-pressed="true">隱藏 Earthdata 對照標籤</button>
+
+<script>
+// 內容都放在 data/ 資料夾：members.json（成員：name、title、field 研究領域、link 個人網頁、photo）、results.json（研究成果）、news.json（最新消息）、products.json（產品，由伺服器排程自動產生）
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function load(path,fallback){try{const r=await fetch(path,{cache:'no-cache'});if(!r.ok)throw 0;return await r.json()}catch(e){return fallback}}
+
+function buildNav(TOPICS){
+  const NAV=[
+   {t:"實驗室介紹",d:"研究室簡介、指導教授、成員與研究設備。",e:"Earthdata：About + Centers",h:"#about",cols:[
+    ["認識研究室",[["研究室簡介","研究主題與合作","#intro"],["研究設備","野外觀測儀器","#equipment"]]],
+    ["成員",[["指導教授 林唐煌 特聘教授","學經歷與研究領域","#pi"],["研究室成員","研究人員與研究助理","#members"]]]]},
+   {t:"研究成果",d:"依主題瀏覽研究展示與論文。",e:"Earthdata：Topics + Publications",h:"#results",cols:[
+    ["依主題",TOPICS.slice(0,3).map(x=>[x.t,x.s])],
+    ["依主題（續）",TOPICS.slice(3).map(x=>[x.t,x.s])],
+    ["發表",[["期刊論文","依年份排列"],["研討會論文",""],["學位論文",""]]]]},
+   {t:"產品展示",d:"由實驗室伺服器定期更新的產品圖。",e:"Earthdata：Data Tools + Worldview Image of the Week",h:"#products",cols:[
+    ["產品",[["最新產品圖","依時間排列"],["依類別瀏覽",""]]]]},
+   {t:"最新消息",d:"論文、演講、獲獎與公告。",e:"Earthdata：News & Events",h:"#news",cols:[
+    ["消息",[["論文發表",""],["演講與活動",""],["獲獎",""]]],
+    ["公告",[["招生與徵才",""]]]]},
+   {t:"聯絡資訊",d:"地址、電話、Email 與合作洽詢。",e:"Earthdata：Contact Us + Engage",h:"#contact",cols:[
+    ["聯絡",[["聯絡我們","地址、電話、Email"],["交通資訊",""]]],
+    ["加入我們",[["碩博士班招生",""],["博士後與助理",""]]]]}];
+  const navlist=document.getElementById('navlist');
+  NAV.forEach((n,i)=>{
+    const li=document.createElement('li');
+    const cols=n.cols.map(([h,items])=>`<div><h4 class="mono">${esc(h)}</h4><ul>${items.map(([a,s,h])=>`<li><a href="${h||n.h}">${esc(a)}${s?`<span>${esc(s)}</span>`:''}</a></li>`).join('')}</ul></div>`).join('');
+    li.innerHTML=`<button class="nav-btn" aria-expanded="false" aria-controls="mega${i}">${n.t}</button>
+    <div class="mega has-ref" id="mega${i}" hidden><span class="ref">${n.e}</span><div class="wrap"><div class="mega-intro"><h3>${n.t}</h3><p>${n.d}</p><a href="${n.h}">前往${n.t} →</a></div><div class="mega-cols">${cols}</div></div></div>`;
+    navlist.appendChild(li);
+  });
+  const btns=[...navlist.querySelectorAll('.nav-btn')];
+  const closeAll=except=>btns.forEach(b=>{if(b!==except){b.setAttribute('aria-expanded','false');document.getElementById(b.getAttribute('aria-controls')).hidden=true}});
+  btns.forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();const open=b.getAttribute('aria-expanded')==='true';closeAll(b);b.setAttribute('aria-expanded',String(!open));document.getElementById(b.getAttribute('aria-controls')).hidden=open}));
+  const nav=document.getElementById('nav'),mt=document.getElementById('menuToggle');
+  document.addEventListener('click',e=>{if(!e.target.closest('header.site')||e.target.closest('.mega a')){closeAll();nav.classList.remove('open')}});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAll()});
+  mt.addEventListener('click',()=>{const o=nav.classList.toggle('open');mt.setAttribute('aria-expanded',String(o))});
+}
+
+function buildResults(TOPICS,R){
+  let cur="all";
+  const cnt=k=>R.filter(r=>r.k===k).length;
+  const tname=k=>(TOPICS.find(x=>x.id===k)||{t:k}).t;
+  document.getElementById('topicGrid').innerHTML=TOPICS.map(x=>`<button class="topic" data-k="${esc(x.id)}"><svg viewBox="0 0 40 40" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${x.i||''}</svg><div><b>${esc(x.t)}</b><span>${esc(x.s)}</span></div><span class="n">${cnt(x.id)} 項</span></button>`).join('');
+  document.getElementById('chips').innerHTML=`<button class="chip" data-k="all">全部 ${R.length}</button>`+TOPICS.map(x=>`<button class="chip" data-k="${esc(x.id)}">${esc(x.t)}</button>`).join('');
+  function render(){
+    const list=cur==="all"?R:R.filter(r=>r.k===cur);
+    document.getElementById('galleryGrid').innerHTML=list.map(r=>`<article class="res"><div class="pic" ${embedUrl(r.embed)?`data-id="${esc(r.img)}"`:''}><img src="img/${esc(r.img)}.jpg" alt="${esc(r.zh)} 代表圖" loading="lazy"></div><div class="body"><div class="meta"><span class="type">${esc(tname(r.k))}</span><span>${esc(r.yr)}</span></div><h3>${esc(r.zh)}</h3><div class="en">${esc(r.en)}</div><p>${esc(r.p)}</p><div class="who">${esc(r.who)}</div>${embedUrl(r.embed)?`<button class="open" data-id="${esc(r.img)}">▶ 看簡報</button>`:''}</div></article>`).join('');
+    document.querySelectorAll('#chips .chip').forEach(c=>c.setAttribute('aria-pressed',String(c.dataset.k===cur)));
+    document.querySelectorAll('.topic').forEach(c=>c.classList.toggle('on',c.dataset.k===cur));
+    document.getElementById('count').textContent=`顯示 ${list.length} / ${R.length} 項`;
+  }
+  document.getElementById('chips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(b){cur=b.dataset.k;render()}});
+  document.getElementById('topicGrid').addEventListener('click',e=>{const b=e.target.closest('.topic');if(b){cur=cur===b.dataset.k?"all":b.dataset.k;render();document.getElementById('gallery').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}});
+  document.getElementById('galleryGrid').addEventListener('click',e=>{const b=e.target.closest('[data-id]');if(!b)return;const r=R.find(x=>x.img===b.dataset.id);if(r&&embedUrl(r.embed))openViewer(r)});
+  render();
+  document.getElementById('mTopics').textContent=TOPICS.length;
+  document.getElementById('mItems').textContent=R.length;
+}
+
+// 簡報檢視：嵌入 Google 簡報「發布到網路」的連結（data/results.json 每筆的 "embed" 欄位）
+function embedUrl(u){
+  u=String(u||'').trim();
+  if(!/^https:\/\/docs\.google\.com\/presentation\//.test(u))return '';
+  u=u.replace(/\/pub(\?|$)/,'/embed$1').replace(/\/(edit|present)([?#].*)?$/,'/embed');
+  return u+(u.includes('?')?'&':'?')+'rm=minimal';
+}
+let lastFocus=null;
+function openViewer(r){
+  lastFocus=document.activeElement;
+  document.getElementById('vTitle').textContent=r.zh;
+  document.getElementById('vFrame').src=embedUrl(r.embed);
+  document.getElementById('viewer').hidden=false;document.body.style.overflow='hidden';
+  document.getElementById('vClose').focus();
+}
+function closeViewer(){document.getElementById('viewer').hidden=true;document.getElementById('vFrame').src='about:blank';document.body.style.overflow='';if(lastFocus)lastFocus.focus()}
+document.getElementById('vClose').onclick=closeViewer;
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.getElementById('viewer').hidden)closeViewer()});
+
+function buildNews(N){
+  N=[...N].sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+  const big=N.filter(n=>n.img).slice(0,2), rest=N.filter(n=>!big.includes(n)).slice(0,6);
+  const card=n=>`<a class="card" href="${esc(n.link||'#news')}"><div class="thumb" style="background:#fff;padding:0"><img src="${esc(n.img)}" alt="" style="width:100%;height:100%;object-fit:contain"></div><div class="body"><div class="meta"><span class="type">${esc(n.type)}</span><span>${esc(n.date)}</span></div><h3>${esc(n.title)}</h3>${n.summary?`<p>${esc(n.summary)}</p>`:''}</div></a>`;
+  const row=n=>`<a class="row" href="${esc(n.link||'#news')}"><span class="mini"></span><div><div class="meta"><span class="type">${esc(n.type)}</span><span>${esc(n.date)}</span></div><b>${esc(n.title)}</b></div></a>`;
+  document.getElementById('newsWrap').innerHTML=big.map(card).join('')+`<div class="list">${rest.map(row).join('')}</div>`;
+}
+
+// 產品展示：同一類別、同一天的圖做成動畫。
+// 一天只有一個 GIF（例如 FP_20261007.gif）→ 拆成影格播放；一天有多張 PNG/JPG → 依時間排成影格播放。
+function buildProducts(P){
+  const items=[...(P.items||[])].sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+  const box=document.getElementById('pgrid'),chips=document.getElementById('pchips');
+  document.getElementById('pupdated').textContent=P.updated?`最後更新 ${P.updated}`:'';
+  if(!items.length){
+    chips.innerHTML='';
+    box.innerHTML=`<div style="border:1px dashed var(--line);border-radius:8px;padding:32px;text-align:center;color:var(--muted)"><b style="color:var(--ink);font-size:17px">還沒有產品圖</b><br>伺服器排程第一次執行後，<code>data/products.json</code> 會列出最新的圖，並自動顯示在這裡。</div>`;
+    return;
+  }
+  const cats=[...new Set(items.map(i=>i.cat))];
+  let cat=cats[0];
+  chips.hidden=cats.length<2;
+  chips.innerHTML=cats.map(c=>`<button class="chip" data-k="${esc(c)}">${esc(c)}</button>`).join('');
+  box.innerHTML=`<div class="player">
+    <div><div class="pstage" id="pstage">
+        <div class="ppanel" id="pp-rgb"><b>RGB 真實色</b><canvas aria-label="RGB 影像"></canvas><div class="empty">RGB 影像<br>待接上伺服器資料</div></div>
+        <div class="ppanel" id="pp-fp"><canvas aria-label="火點偵測"></canvas><img alt="" hidden></div>
+        <div class="ppanel" id="pp-b7"><canvas aria-label="B7 異常"></canvas></div>
+        <div class="pload" id="pload"><span id="ploadTxt">載入中…</span><div class="bar"><i id="pbar"></i></div></div></div>
+      <div class="pctl" id="pctl"><button id="pprev" aria-label="上一張">◀</button><button id="pplay" aria-label="暫停">❚❚</button><button id="pnext" aria-label="下一張">▶</button>
+      <input type="range" id="pslider" min="0" max="0" value="0" aria-label="影格"><span class="mono" id="pframe">0 / 0</span>
+      <select id="pspeed" aria-label="播放速度"><option value="2">慢</option><option value="0.8" selected>中</option><option value="0.35">快</option></select></div></div>
+    <div class="pside"><div style="display:grid;gap:6px"><div class="meta"><span class="type" id="pcat"></span><span id="pdate"></span><span class="todo" style="margin:0" id="pnew">最新</span></div>
+      <h3 id="ptitle"></h3><p id="pdesc" hidden></p></div>
+      <div><p style="margin-bottom:8px">選擇日期</p><div class="pdays" id="pdays"></div></div>
+      <a class="more" id="porig" href="#" target="_blank" rel="noopener">開啟原始圖檔 →</a></div></div>`;
+  const $=id=>document.getElementById(id);
+  const stage=$('pstage'),slider=$('pslider'),img=stage.querySelector('#pp-fp img');
+  const P3={};['rgb','fp','b7'].forEach(k=>{const el=$('pp-'+k),c=el.querySelector('canvas');P3[k]={el,c,x:c.getContext('2d')}});
+  const paint=(k,src,w,h)=>{const p=P3[k];if(p.c.width!==w){p.c.width=w;p.c.height=h}p.x.drawImage(src,0,0)};
+  const layout=keys=>{['rgb','fp','b7'].forEach(k=>{P3[k].el.hidden=!keys.includes(k);P3[k].c.hidden=false});stage.classList.toggle('one',keys.length===1);P3.rgb.el.querySelector('.empty').hidden=true};
+  let frames=0,idx=0,playing=!matchMedia('(prefers-reduced-motion: reduce)').matches,timer=null,token=0,draw=null,dec=null,visible=true;
+  const days=()=>{const m=new Map();items.filter(i=>i.cat===cat).forEach(i=>{const d=String(i.date).slice(0,10);(m.get(d)||m.set(d,[]).get(d)).push(i)});return[...m].map(([d,l])=>({d,l:l.sort((a,b)=>String(a.date).localeCompare(String(b.date)))}))};
+  function setPlay(v){playing=v;$('pplay').textContent=v?'❚❚':'▶︎';$('pplay').setAttribute('aria-label',v?'暫停':'播放');tick()}
+  function tick(){clearTimeout(timer);if(playing&&visible&&frames>1)timer=setTimeout(async()=>{await show((idx+1)%frames);tick()},+$('pspeed').value*1000)}
+  async function show(i){idx=i;slider.value=i;$('pframe').textContent=`${i+1} / ${frames}`;if(draw)await draw(i)}
+  function progress(t,f){$('pload').hidden=false;$('ploadTxt').textContent=t;$('pbar').style.width=Math.round(f*100)+'%'}
+  async function fetchBuf(url,my,part,total){
+    const r=await fetch(url);if(!r.ok)throw new Error(r.status);
+    const n=+r.headers.get('content-length')||0;if(!r.body||!n)return r.arrayBuffer();
+    const rd=r.body.getReader(),out=new Uint8Array(n);let got=0;
+    for(;;){const{done,value}=await rd.read();if(done)break;if(my!==token){rd.cancel();throw new Error('stale')}
+      if(got+value.length>n)return new Blob([out.slice(0,got),value]).arrayBuffer();out.set(value,got);got+=value.length;
+      progress(`下載中 ${(got/1048576).toFixed(1)} / ${(n/1048576).toFixed(1)} MB`,(part+got/n)/total)}
+    return out.buffer;
+  }
+  async function open(day){
+    const my=++token;clearTimeout(timer);if(dec){try{dec.close()}catch(e){}dec=null}
+    draw=null;frames=0;img.hidden=true;$('pctl').hidden=false;
+    const all=days(),first=all[0].d===day.d,it=day.l[day.l.length-1];
+    $('pcat').textContent=it.cat;$('pdate').textContent=day.d;$('pnew').hidden=!first;
+    $('ptitle').textContent=it.title;$('pdesc').textContent=it.desc||'';$('pdesc').hidden=!it.desc;$('porig').href=it.file;
+    $('pdays').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.d===day.d)));
+    const gif=day.l.length===1&&/\.gif$/i.test(it.file);
+    try{
+      if(gif){
+        if(!('ImageDecoder' in window))throw new Error('no ImageDecoder');
+        const buf=await fetchBuf(it.file,my,0,1);if(my!==token)return;
+        progress('處理影格中…',1);
+        dec=new ImageDecoder({data:buf,type:'image/gif'});await dec.tracks.ready;await dec.completed;if(my!==token)return;
+        // 火點 GIF：影格依時間「B7 Anomaly、Fire Point」兩兩交替 → 每個時間畫成並排的兩格（加上 RGB 格）
+        const n=dec.tracks.selectedTrack.frameCount,pair=n%2===0&&n>1;
+        frames=pair?n/2:n;layout(pair?['rgb','fp','b7']:['fp']);if(pair)P3.rgb.el.querySelector('.empty').hidden=false,P3.rgb.c.hidden=true;
+        const d=dec,one=async(fi,k)=>{const{image}=await d.decode({frameIndex:fi});if(d===dec)paint(k,image,image.displayWidth,image.displayHeight);image.close()};
+        draw=pair?async i=>{await Promise.all([one(2*i,'b7'),one(2*i+1,'fp')])}:async i=>one(i,'fp');
+      }else{
+        const pics=[];for(let k=0;k<day.l.length;k++){progress(`載入中 ${k+1} / ${day.l.length}`,k/day.l.length);
+          const im=new Image();im.src=day.l[k].file;await im.decode();if(my!==token)return;pics.push(im)}
+        frames=pics.length;layout(['fp']);draw=async i=>{const im=pics[i];paint('fp',im,im.naturalWidth,im.naturalHeight)};
+      }
+      slider.max=Math.max(0,frames-1);await show(0);$('pload').hidden=true;tick();
+    }catch(e){
+      if(my!==token||e.message==='stale')return;
+      // 瀏覽器不支援拆影格（例如舊版 Safari）：直接顯示 GIF，本身就會自動播放
+      layout(['fp']);P3.fp.c.hidden=true;img.hidden=false;img.src=it.file;img.alt=it.title;$('pctl').hidden=true;$('pload').hidden=true;
+    }
+  }
+  function pickCat(c){cat=c;chips.querySelectorAll('.chip').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.k===c)));
+    const all=days();$('pdays').innerHTML=all.map(x=>`<button data-d="${esc(x.d)}">${esc(x.d.slice(5).replace('-','/'))}</button>`).join('');open(all[0])}
+  chips.onclick=e=>{const b=e.target.closest('.chip');if(b)pickCat(b.dataset.k)};
+  $('pdays').onclick=e=>{const b=e.target.closest('button');if(b)open(days().find(x=>x.d===b.dataset.d))};
+  $('pplay').onclick=()=>setPlay(!playing);
+  $('pprev').onclick=()=>{setPlay(false);if(frames)show((idx-1+frames)%frames)};
+  $('pnext').onclick=()=>{setPlay(false);if(frames)show((idx+1)%frames)};
+  slider.oninput=()=>{setPlay(false);show(+slider.value)};
+  $('pspeed').onchange=tick;
+  new IntersectionObserver(es=>{visible=es[0].isIntersecting;tick()}).observe($('pstage'));
+  setPlay(playing);pickCat(cat);
+}
+
+// 產品展示：每個產品一個 JSON（data/h8.json 火點、data/db.json DeepBlue AOD），由伺服器排程產生。
+// 格式：{title, date, tz, panels:[{key,label}], frames:[{time, <key>:圖檔路徑}]}；播放最新一天，多格同時間並排。
+const ANIM_DEFAULT={h8:{title:'向日葵八號 火點偵測',panels:[{key:'rgb',label:'真實色 True Color'},{key:'fp',label:'火點潛勢 Fire Point'},{key:'b7',label:'3.9µm 亮溫異常 B7 Anomaly'}]},
+  db:{title:'Deep Blue 氣膠光學厚度 AOD',panels:[{key:'aod',label:'AOD'}]}};
+function buildAnims(list){
+  list=list.filter(x=>x.d&&x.d.frames&&x.d.frames.length);
+  const chips=document.getElementById('pchips');
+  if(!list.length)return false;
+  chips.hidden=list.length<2;
+  chips.innerHTML=list.map((x,i)=>`<button class="chip" data-i="${i}">${esc(x.d.title||ANIM_DEFAULT[x.k].title)}</button>`).join('');
+  const pick=i=>{animCur=list[i].k;chips.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',String(+c.dataset.i===i)));buildAnim(list[i].d,ANIM_DEFAULT[list[i].k])};
+  chips.onclick=e=>{const c=e.target.closest('.chip');if(c)pick(+c.dataset.i)};
+  pick(Math.max(0,list.findIndex(x=>x.k===animCur)));return true;
+}
+// 每 5 分鐘自動檢查有沒有新的產品圖；有新資料才重畫，停留中的頁面不用重新整理
+let animCur=null,animSig='';
+const animSign=list=>JSON.stringify(list.map(x=>[x.k,x.d&&x.d.date,(x.d&&x.d.frames||[]).map(f=>f.time)]));
+async function refreshAnims(){
+  if(document.hidden)return;
+  const list=[{k:'h8',d:await load('data/h8.json',null)},{k:'db',d:await load('data/db.json',null)}];
+  if(list.some(x=>!x.d))return;  // 網路暫時不通就下次再試
+  const sig=animSign(list);
+  if(sig!==animSig){animSig=sig;buildAnims(list)}
+  else{const u=(list.find(x=>x.k===animCur)||list[0]).d.updated;if(u)document.getElementById('pupdated').textContent=`最後更新 ${u}`}
+}
+let animStop=()=>{};
+function buildAnim(H,def){
+  animStop();
+  const v=encodeURIComponent(H.date||''),F=H.frames.map(f=>{const g={...f};for(const k in g)if(/^(h8|db)\//.test(g[k]))g[k]+='?v='+v;return g}),$=id=>document.getElementById(id),title=H.title||def.title;
+  const K=(H.panels&&H.panels.length?H.panels:def.panels).map(p=>[p.key,p.label]).filter(([k])=>F.some(f=>f[k]));
+  $('pupdated').textContent=H.updated?`最後更新 ${H.updated}`:'';
+  $('pgrid').innerHTML=`<div class="player">
+    <div class="pside"><div style="display:grid;gap:6px"><div class="meta"><span class="type">${esc(title)}</span><span class="todo" style="margin:0">最新一天</span></div>
+      <h3 id="htime"></h3></div><p>台灣時間（${esc(H.tz||'UTC+8')}），共 ${F.length} 個時間。</p></div>
+    <div><div class="pstage h8${K.length===1?' one':''}" id="pstage" style="--n:${K.length}">${K.map(([k,l],j)=>`<div class="ppanel"><b>${esc(l)}</b><img id="h-${j}" alt="${esc(l)}"><div class="empty" id="e-${j}" hidden>這個時間沒有圖</div></div>`).join('')}
+      <div class="pload" id="pload"><span id="ploadTxt">載入中…</span><div class="bar"><i id="pbar"></i></div></div></div>
+      <div class="pctl"><button id="pprev" aria-label="上一個時間">◀</button><button id="pplay" aria-label="暫停">❚❚</button><button id="pnext" aria-label="下一個時間">▶</button>
+      <input type="range" id="pslider" min="0" max="${F.length-1}" value="0" aria-label="時間"><span class="mono" id="pframe"></span>
+      <select id="pspeed" aria-label="播放速度"><option value="1.5">慢</option><option value="0.7" selected>中</option><option value="0.3">快</option></select></div></div></div>`;
+  let idx=0,playing=!matchMedia('(prefers-reduced-motion: reduce)').matches,timer=null,visible=true,alive=true;
+  function show(i){idx=i;const f=F[i];$('pslider').value=i;$('pframe').textContent=String(f.time).slice(11);$('htime').textContent=f.time;
+    K.forEach(([k],j)=>{const has=!!f[k];$('h-'+j).hidden=!has;$('e-'+j).hidden=has;if(has)$('h-'+j).src=f[k]})}
+  function tick(){clearTimeout(timer);if(alive&&playing&&visible&&F.length>1)timer=setTimeout(()=>{show((idx+1)%F.length);tick()},+$('pspeed').value*1000)}
+  function setPlay(v){playing=v;$('pplay').textContent=v?'❚❚':'▶︎';$('pplay').setAttribute('aria-label',v?'暫停':'播放');tick()}
+  // 先把整天的圖載入，播放時才不會閃
+  const urls=[...new Set(F.flatMap(f=>K.map(([k])=>f[k]).filter(Boolean)))];let done=0;
+  Promise.all(urls.map(u=>new Promise(r=>{const im=new Image();im.onload=im.onerror=()=>{done++;if(alive){$('ploadTxt').textContent=`載入中 ${done} / ${urls.length}`;$('pbar').style.width=Math.round(done/urls.length*100)+'%'}r()};im.src=u})))
+    .then(()=>{if(!alive)return;$('pload').hidden=true;if(playing)show(0);setPlay(playing)});
+  show(F.length-1);
+  $('pplay').onclick=()=>{if(!playing&&idx===F.length-1)show(0);setPlay(!playing)};
+  $('pprev').onclick=()=>{setPlay(false);show((idx-1+F.length)%F.length)};
+  $('pnext').onclick=()=>{setPlay(false);show((idx+1)%F.length)};
+  $('pslider').oninput=()=>{setPlay(false);show(+$('pslider').value)};
+  $('pspeed').onchange=tick;
+  const io=new IntersectionObserver(es=>{visible=es[0].isIntersecting;tick()});io.observe($('pstage'));
+  animStop=()=>{alive=false;clearTimeout(timer);io.disconnect()};
+}
+
+function buildMembers(M){
+  const el=document.getElementById('members');if(!el)return;
+  el.innerHTML=M.map(m=>`<div class="mem"><div class="av">${m.photo?`<img src="${esc(m.photo)}" alt="">`:esc(String(m.name||'').slice(0,1))}</div><div style="min-width:0"><b>${esc(m.name)}</b><span>${esc(m.title)}</span>${m.field?`<span class="field">研究領域：${esc(m.field)}</span>`:''}${/^https?:\/\//.test(m.link||'')?`<a class="web" href="${esc(m.link)}" target="_blank" rel="noopener">個人網頁 ↗</a>`:''}</div></div>`).join('');
+}
+
+function buildEquip(E){
+  const el=document.getElementById('equip');if(!el)return;
+  el.innerHTML=E.map(e=>`<div class="eq">${e.img?`<img src="${esc(e.img)}" alt="${esc(e.name)} 野外觀測照片" loading="lazy">`:''}<div class="meta"><span class="type">${esc(e.type)}</span></div><b>${esc(e.name)}</b><span>${esc(e.desc)}</span></div>`).join('');
+}
+
+function buildFooter(TOPICS){
+  const FOOT=[["實驗室介紹",["研究室簡介","指導教授","研究室成員","研究設備"]],["研究成果",TOPICS.map(x=>x.t)],["產品展示",["最新產品圖","依類別瀏覽"]],["最新消息",["論文發表","演講與活動","獲獎"]],["聯絡資訊",["聯絡我們","交通資訊","招生與徵才"]]];
+  document.getElementById('fcols').innerHTML=FOOT.map(([h,l])=>`<div><h4>${esc(h)}</h4><ul>${l.map(x=>`<li><a href="#top">${esc(x)}</a></li>`).join('')}</ul></div>`).join('');
+}
+
+(async()=>{
+  const [res,news,prod,mem,eq,h8,db]=await Promise.all([load('data/results.json',{topics:[],items:[]}),load('data/news.json',[]),load('data/products.json',{items:[]}),load('data/members.json',[]),load('data/equipment.json',[]),load('data/h8.json',{frames:[]}),load('data/db.json',{frames:[]})]);
+  buildNav(res.topics);buildResults(res.topics,res.items);buildNews(news);(animSig=animSign([{k:'h8',d:h8},{k:'db',d:db}]),buildAnims([{k:'h8',d:h8},{k:'db',d:db}]))?setInterval(refreshAnims,5*60*1000):buildProducts(prod);buildFooter(res.topics);buildMembers(mem);buildEquip(eq);
+})();
+
+const rt=document.getElementById('refToggle');
+function setRef(on){document.body.classList.toggle('show-ref',on);rt.setAttribute('aria-pressed',String(on));rt.textContent=on?'隱藏 Earthdata 對照標籤':'顯示 Earthdata 對照標籤'}
+setRef(false);
+rt.addEventListener('click',()=>setRef(!document.body.classList.contains('show-ref')));
+
+// contour-line background for the hero
+(function(){
+  const c=document.getElementById('contours'),x=c.getContext('2d');
+  function draw(){
+    const w=c.clientWidth,h=c.clientHeight,d=Math.min(devicePixelRatio||1,2);
+    c.width=w*d;c.height=h*d;x.setTransform(d,0,0,d,0,0);x.clearRect(0,0,w,h);
+    const col=getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+    x.strokeStyle=col;x.lineWidth=1;
+    const cx=w*.78,cy=h*.35;
+    for(let k=1;k<26;k++){
+      x.beginPath();
+      for(let a=0;a<=Math.PI*2+.01;a+=.04){
+        const r=k*22+9*Math.sin(a*3+k*.4)+6*Math.cos(a*5-k*.3);
+        const px=cx+r*Math.cos(a)*1.25,py=cy+r*Math.sin(a);
+        a===0?x.moveTo(px,py):x.lineTo(px,py);
+      }
+      x.globalAlpha=k%5===0?.55:.22;x.stroke();
+    }
+  }
+  draw();addEventListener('resize',draw);
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change',draw);
+})();
+
+</script>

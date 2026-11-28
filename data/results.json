@@ -1,0 +1,196 @@
+{
+ "topics": [
+  {
+   "id": "aer",
+   "t": "氣膠遙測與分類",
+   "s": "沙塵、生質燃燒、人為污染、海鹽",
+   "i": "<circle cx=\"12\" cy=\"14\" r=\"4\"/><circle cx=\"26\" cy=\"11\" r=\"3\"/><circle cx=\"20\" cy=\"25\" r=\"5\"/><circle cx=\"31\" cy=\"26\" r=\"2.5\"/><circle cx=\"9\" cy=\"29\" r=\"2\"/>"
+  },
+  {
+   "id": "pm",
+   "t": "PM2.5 與空氣品質",
+   "s": "由 AOD 推估地面懸浮微粒",
+   "i": "<path d=\"M5 30c5-3 8-3 12 0s8 3 12 0 6-3 6-3\"/><path d=\"M5 22c5-3 8-3 12 0s8 3 12 0 6-3 6-3\"/><path d=\"M5 14c5-3 8-3 12 0s8 3 12 0 6-3 6-3\"/>"
+  },
+  {
+   "id": "cal",
+   "t": "衛星輻射與大氣校正",
+   "s": "福衛五號、SPOT 影像校正",
+   "i": "<rect x=\"15\" y=\"15\" width=\"10\" height=\"10\" rx=\"1\"/><path d=\"M15 20H5M35 20H25M20 15V7M20 33v-8M8 8l5 5M32 32l-5-5\"/>"
+  },
+  {
+   "id": "uhi",
+   "t": "都市熱島與地表溫度",
+   "s": "地表溫度、蒸發散、都市化",
+   "i": "<path d=\"M8 34V18h6v16M16 34V10h8v24M26 34V22h6v12M5 34h30\"/><circle cx=\"31\" cy=\"9\" r=\"3\"/>"
+  },
+  {
+   "id": "land",
+   "t": "地表與水環境監測",
+   "s": "河口懸浮沉積物、森林與稻作",
+   "i": "<path d=\"M5 28c4-3 7-3 10 0s7 3 10 0 7-3 10 0\"/><path d=\"M12 22l6-12 6 12\"/><path d=\"M18 10v12\"/>"
+  },
+  {
+   "id": "clim",
+   "t": "氣候變遷",
+   "s": "輻射收支與輻射強迫",
+   "i": "<circle cx=\"20\" cy=\"20\" r=\"13\"/><path d=\"M7 20h26M20 7c5 5 5 21 0 26M20 7c-5 5-5 21 0 26\"/>"
+  }
+ ],
+ "items": [
+  {
+   "k": "aer",
+   "img": "aerosol-partition",
+   "zh": "氣膠分類與 PM 濃度遙測",
+   "en": "Remote Sensing of Aerosol Partitioning and PM Concentration",
+   "who": "林唐煌",
+   "yr": "2025",
+   "p": "以多光譜光學特性區分沙塵、生質燃燒、人為污染與海鹽氣膠，建立 AOD 與 PM2.5 的關係，提供三維 PM2.5 資訊給空品預報模式。",
+   "src": "4-Remote Sensing of Aerosol Partioning_T-Lin_20250428.pptx",
+   "embed": "https://docs.google.com/presentation/d/e/2PACX-1vQAgEXn6pwwNNeXJXVgUiVk4idHzakmQN-3yGBAPfTfU-ULn4DNz5FsUR2k_nG73Q/pub?start=false&loop=false&delayms=3000"
+  },
+  {
+   "k": "aer",
+   "img": "ndai",
+   "zh": "正規化微分氣膠指數 NDAI",
+   "en": "A Novel Index for Atmospheric Aerosol Partition with Spectral Optical Depths",
+   "who": "林唐煌",
+   "yr": "2018",
+   "p": "利用光譜光學厚度的一階與二階微分辨識沙塵、生質燃燒與人為污染，並估算混合狀態下各類氣膠所佔的 AOD 比例。",
+   "src": "15-Normalized Derivative Aerosol Index-2018.pptx",
+   "embed": ""
+  },
+  {
+   "k": "aer",
+   "img": "sea-salt",
+   "zh": "海鹽氣膠辨識及其輻射強迫",
+   "en": "Sea Salt Aerosol Identification Based on Multispectral Optical Properties",
+   "who": "Dwi Atmoko（指導：林唐煌）",
+   "yr": "2022",
+   "p": "以 1.24、1.64、2.13 µm 波段的二階微分強化海鹽與沙塵的區分；同樣 AOD 下，海鹽在大氣頂層的冷卻效應最強。",
+   "src": "15_1-Sea Salt Aerosol Identification.pptx",
+   "embed": ""
+  },
+  {
+   "k": "aer",
+   "img": "black-carbon",
+   "zh": "黑碳對沙塵光學特性的影響",
+   "en": "Simulation of the Black Carbon Effect on Dust Properties for MODIS Data",
+   "who": "林唐煌、Ping Yang（Texas A&M）",
+   "yr": "2016",
+   "p": "模擬長程傳輸中沙塵與黑碳混合後的光學特性變化，評估其對 MODIS 氣膠反演造成的不確定性。",
+   "src": "14-simulation of black carbon effect.pptx",
+   "embed": ""
+  },
+  {
+   "k": "pm",
+   "img": "pm25-hanoi",
+   "zh": "以地面與衛星 AOD 估算河內 PM2.5",
+   "en": "Estimating PM2.5 based on AOD from Ground-based Station and Satellite Observations in Hanoi, Vietnam",
+   "who": "Khuc Thanh Dong（指導：林唐煌）",
+   "yr": "2019",
+   "p": "結合地面站與衛星的氣膠光學厚度建立 PM2.5 推估模式，並以河內測站觀測驗證。",
+   "src": "16-Estimating Particulate Matter (PM2.5) …Hanoi.pptx",
+   "embed": ""
+  },
+  {
+   "k": "pm",
+   "img": "fusion-aod",
+   "zh": "時空影像融合反演氣膠光學厚度",
+   "en": "Spatio-Temporal Image Fusion for Atmospheric Properties Using Landsat-8 and Himawari-8",
+   "who": "Hsuan-Chi Ho（指導：Chih-Yuan Huang）",
+   "yr": "2016",
+   "p": "提出 STARFM-AP，融合 Himawari-8 與 Landsat-8 產生 30 公尺、每 10 分鐘的影像，反演的 AOD 比原始 Himawari-8 更準確。",
+   "src": "13-1-High spatiotemporal resolution Image fusion_Reflectance.pptx",
+   "embed": "https://docs.google.com/presentation/d/e/2PACX-1vSgVTjAKVpAuB8RwiFpAo9i8stoSHY5K0E1T6OipbsfuswqU_CWU0sLKV8a71RSWQ/pub?start=false&loop=false&delayms=3000"
+  },
+  {
+   "k": "cal",
+   "img": "fs5-calib",
+   "zh": "福衛五號 RSI 相對輻射校正",
+   "en": "Relative Radiometric Calibration of FORMOSAT-5 RSI Using Empirical Mode Decomposition",
+   "who": "林唐煌",
+   "yr": "2018",
+   "p": "以經驗模態分解（EMD）修正偵測器陣列響應不一致，等化福衛五號全色態影像的數值分布。",
+   "src": "19-Relative Radiometric Calibration.pptx",
+   "embed": ""
+  },
+  {
+   "k": "cal",
+   "img": "atmospheric",
+   "zh": "衛星影像大氣校正與 AOD 反演",
+   "en": "Atmospheric Calibration of Satellite Imagery",
+   "who": "林唐煌",
+   "yr": "2015",
+   "p": "改良多方向結構函數法，在複雜地形以 SPOT 影像反演 AOD，最大誤差由 19% 降到 6.5%。",
+   "src": "14-3-Atmospheric Calibration of Satellite Imagery.ppt",
+   "embed": ""
+  },
+  {
+   "k": "cal",
+   "img": "radiometric",
+   "zh": "衛星影像輻射校正",
+   "en": "Radiometric Calibration of Satellite Imagery",
+   "who": "林唐煌",
+   "yr": "2014",
+   "p": "說明光學感測器的光譜響應、絕對輻射校正與大氣校正流程。",
+   "src": "14-2-Radiometric Calibration of Satellite Imagery.ppt",
+   "embed": ""
+  },
+  {
+   "k": "uhi",
+   "img": "hanoi-uhi",
+   "zh": "河內都市發展對環境與氣象的影響",
+   "en": "The Impact of Urban Development on Environment and Meteorology in Hanoi, Vietnam",
+   "who": "Nguyen Thi Mai 阮氏梅（指導：林唐煌）",
+   "yr": "2019",
+   "p": "1999–2016 年都市化擴大了地表熱島；1961–2016 年市區相對濕度每年下降 0.18%，氣溫每年上升 0.03 °C。",
+   "src": "13-The Impact of Urban Development on Environment and Meteorology in Hanoi.pptx",
+   "embed": ""
+  },
+  {
+   "k": "uhi",
+   "img": "fusion-lst",
+   "zh": "高時空解析地表溫度融合與蒸發散估算",
+   "en": "Improving Image Fusion for High-spatiotemporal LST Retrieval, TVDI and Evapotranspiration",
+   "who": "Tri Wandi Januar（指導：林唐煌）",
+   "yr": "2019",
+   "p": "提出 STARFM-TP，熱紅外影像預測 PSNR 超過 42 dB（STARFM 約 31、ESTARFM 約 38 dB），並推估逐時蒸發散與乾旱指數 TVDI。",
+   "src": "13-2-High spatiotemporal resolution Image fusion…ET_Emissivity.pptx",
+   "embed": ""
+  },
+  {
+   "k": "land",
+   "img": "sediment",
+   "zh": "衛星光學影像監測河口懸浮沉積物：以卑南溪為例",
+   "en": "Application of Multi-satellite Optical Image to Monitoring the Suspended Sediments",
+   "who": "王禹翔、張中白、劉振榮、林唐煌",
+   "yr": "2016",
+   "p": "建立多波段迴歸模式，由衛星反射率反演卑南溪口懸浮沉積物濃度；先做大氣校正可改善反演結果。",
+   "src": "16-Remote sensing of suspended sediments-TH.pptx",
+   "embed": ""
+  },
+  {
+   "k": "land",
+   "img": "forest-rice",
+   "zh": "森林面積分類與稻米產量預估",
+   "en": "Application: Forest Area and Rice Yield Forecast",
+   "who": "林唐煌",
+   "yr": "2016",
+   "p": "以 SPOT-4 VI 月 NDVI 與 SPOT HRV 影像分類台灣森林面積，結合田野調查驗證，並應用於稻作產量預估。",
+   "src": "14-Application-Forest Area and Rice Yield Forecast.ppt",
+   "embed": ""
+  },
+  {
+   "k": "clim",
+   "img": "climate",
+   "zh": "氣候變遷導論",
+   "en": "Introduction to Climate Changes",
+   "who": "林唐煌",
+   "yr": "2023",
+   "p": "從地球輻射收支說明全球暖化的驅動機制、輻射強迫的模擬與其不確定性。",
+   "src": "0-Introduction to Climate Changes.pptx",
+   "embed": "https://docs.google.com/presentation/d/e/2PACX-1vRc-K6aBkHhj-Ys005d4mkLehumQgDjMJDQvjGem5mQ9fTpxJzm7LQh3JNNo5V-8w/pub?start=false&loop=false&delayms=3000"
+  }
+ ]
+}
